@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL, AUTH_STORAGE_KEYS, API_ENDPOINTS } from "../config/api";
 
 // ============================================
 // Types
@@ -24,12 +25,11 @@ interface LoginResponse {
 }
 
 // ============================================
-// Constants
+// Constants (imported from config)
 // ============================================
-const BACKEND_URL = "http://localhost:3001";
-const TOKEN_STORAGE_KEY = "rustyn_ai_auth_token";
-const USER_STORAGE_KEY = "rustyn_ai_auth_user";
-const EXPIRY_STORAGE_KEY = "rustyn_ai_auth_expiry";
+const TOKEN_STORAGE_KEY = AUTH_STORAGE_KEYS.TOKEN;
+const USER_STORAGE_KEY = AUTH_STORAGE_KEYS.USER;
+const EXPIRY_STORAGE_KEY = AUTH_STORAGE_KEYS.EXPIRY;
 
 // ============================================
 // Auth Helpers (exported for use in App.tsx)
