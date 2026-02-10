@@ -166,10 +166,8 @@ export const AboutSection: React.FC<AboutSectionProps> = () => {
               </div>
               <div className="flex items-center gap-4 pl-[60px]">
                 <a
-                  href="https://github.com/rustyn/rustyn-ai"
-                  onClick={(e) =>
-                    handleOpenLink(e, "https://github.com/rustyn/rustyn-ai")
-                  }
+                  href="https://github.com"
+                  onClick={(e) => handleOpenLink(e, "https://github.com/")}
                   className="text-text-tertiary hover:text-text-primary transition-colors"
                   title="GitHub"
                 >
@@ -182,10 +180,8 @@ export const AboutSection: React.FC<AboutSectionProps> = () => {
           {/* 2. Star & Report */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <a
-              href="https://github.com/rustyn/rustyn-ai"
-              onClick={(e) =>
-                handleOpenLink(e, "https://github.com/rustyn/rustyn-ai")
-              }
+              href="https://github.com/"
+              onClick={(e) => handleOpenLink(e, "https://github.com/")}
               className="bg-bg-item-surface border border-border-subtle rounded-xl p-5 transition-all group flex items-center gap-4 cursor-pointer h-full hover:bg-white/10"
             >
               <div className="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-500 shrink-0 group-hover:scale-110 transition-transform">
@@ -241,10 +237,8 @@ export const AboutSection: React.FC<AboutSectionProps> = () => {
               </div>
             </div>
             <a
-              href="https://github.com/rustyn/rustyn-ai"
-              onClick={(e) =>
-                handleOpenLink(e, "https://github.com/rustyn/rustyn-ai")
-              }
+              href="https://github.com/"
+              onClick={(e) => handleOpenLink(e, "https://github.com/")}
               className="whitespace-nowrap px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-main text-xs font-bold rounded-lg transition-all shadow hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
             >
               <Github size={14} />
