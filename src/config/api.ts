@@ -12,20 +12,7 @@
 // Production backend URL (Vercel deployment)
 const PRODUCTION_URL = "https://rustyn-ai-one.vercel.app";
 
-// Development backend URL (local server)
-const DEVELOPMENT_URL = "http://localhost:3001";
-
-// Automatically detect environment
-// In Electron, process.env.NODE_ENV is set by the build process
-const isDevelopment =
-  process.env.NODE_ENV === "development" ||
-  import.meta.env.DEV;
-
-/**
- * Active backend URL
- * Defaults to production, switches to development in dev mode
- */
-export const BACKEND_URL = isDevelopment ? DEVELOPMENT_URL : PRODUCTION_URL;
+export const BACKEND_URL = PRODUCTION_URL;
 
 /**
  * API endpoints
@@ -78,7 +65,7 @@ export function createAuthHeader(token: string): Record<string, string> {
  */
 export async function apiFetch<T = any>(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
@@ -100,7 +87,9 @@ export async function apiFetch<T = any>(
 
     // Check for API-level errors
     if (!response.ok) {
-      throw new Error(data.message || `HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(
+        data.message || `HTTP ${response.status}: ${response.statusText}`,
+      );
     }
 
     return data;
@@ -108,21 +97,11 @@ export async function apiFetch<T = any>(
     clearTimeout(timeoutId);
 
     if (error.name === "AbortError") {
-      throw new Error("Request timeout - please check your internet connection");
+      throw new Error(
+        "Request timeout - please check your internet connection",
+      );
     }
 
     throw error;
   }
-}
-
-/**
- * Log current API configuration (for debugging)
- */
-export function logApiConfig(): void {
-  console.log("========================================");
-  console.log("  Rustyn AI - API Configuration");
-  console.log("========================================");
-  console.log(`  Environment : ${isDevelopment ? "Development" : "Production"}`);
-  console.log(`  Backend URL : ${BACKEND_URL}`);
-  console.log("========================================");
 }

@@ -132,7 +132,7 @@ export class WindowHelper {
         contextIsolation: true,
         preload: path.join(__dirname, "preload.js"),
         scrollBounce: true,
-        webSecurity: !isDev, // DEBUG: Disable web security only in dev
+        webSecurity: true,
       },
       show: false, // DEBUG: Force show -> Fixed white screen, now relies on ready-to-show
       titleBarStyle: "hiddenInset",
@@ -163,6 +163,20 @@ export class WindowHelper {
     }
 
     this.launcherWindow.setContentProtection(false);
+
+    // Allow CORS responses from the backend API so fetch works from file:// origin
+    this.launcherWindow.webContents.session.webRequest.onHeadersReceived(
+      { urls: ["https://rustyn-ai-one.vercel.app/*"] },
+      (details, callback) => {
+        const headers = Object.assign({}, details.responseHeaders, {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type, Authorization, X-Requested-With",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        });
+        callback({ responseHeaders: headers });
+      },
+    );
 
     this.launcherWindow
       .loadURL(`${startUrl}?window=launcher`)

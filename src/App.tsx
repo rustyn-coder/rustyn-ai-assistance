@@ -73,7 +73,6 @@ const App: React.FC = () => {
           setIsAuthenticated(false);
         }
       } catch (err) {
-        console.error("[App] Auth check failed:", err);
         setIsAuthenticated(false);
       } finally {
         setAuthChecking(false);
@@ -108,10 +107,7 @@ const App: React.FC = () => {
         localStorage.getItem("useLegacyAudioBackend") === "true";
 
       if (!useLegacyAudio) {
-        console.log("[App] Using ScreenCaptureKit backend (Default).");
         outputDeviceId = "sck";
-      } else {
-        console.log("[App] Using Legacy CoreAudio backend (User Preference).");
       }
 
       const result = await window.electronAPI.startMeeting({
@@ -119,22 +115,18 @@ const App: React.FC = () => {
       });
       if (result.success) {
         await window.electronAPI.setWindowMode("overlay");
-      } else {
-        console.error("Failed to start meeting:", result.error);
       }
     } catch (err) {
-      console.error("Failed to start meeting:", err);
+      console.error("[App] Failed to start meeting:", err);
     }
   };
 
   const handleEndMeeting = async () => {
-    console.log("[App.tsx] handleEndMeeting triggered");
     try {
       await window.electronAPI.endMeeting();
-      console.log("[App.tsx] endMeeting IPC completed");
       await window.electronAPI.setWindowMode("launcher");
     } catch (err) {
-      console.error("Failed to end meeting:", err);
+      console.error("[App] Failed to end meeting:", err);
       window.electronAPI.setWindowMode("launcher");
     }
   };

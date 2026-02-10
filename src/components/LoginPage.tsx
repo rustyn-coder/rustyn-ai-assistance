@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BACKEND_URL, AUTH_STORAGE_KEYS, API_ENDPOINTS } from "../config/api";
+import { BACKEND_URL, AUTH_STORAGE_KEYS } from "../config/api";
 
 // ============================================
 // Types
@@ -331,9 +331,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         err.message?.includes("network") ||
         err.name === "TypeError"
       ) {
-        setError(
-          "Cannot connect to the backend server. Make sure it's running on port 3001.",
-        );
+        setError("Please check your internet connection and try again.");
       } else {
         setError(err.message || "An unexpected error occurred.");
       }
@@ -910,9 +908,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             </svg>
             <span>Secured with JWT authentication</span>
           </div>
-          <p style={{ marginTop: 6, color: "#27272a" }}>
-            Backend running on port 3001
-          </p>
         </motion.div>
       </motion.div>
     </div>
