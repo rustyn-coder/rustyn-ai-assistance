@@ -82,6 +82,12 @@ export async function verifyStoredToken(): Promise<boolean> {
   const token = getStoredToken();
   if (!token) return false;
   try {
+    // Route through Electron main process via IPC (renderer fetch may be blocked)
+    if (window.electronAPI?.authVerify) {
+      const data = await window.electronAPI.authVerify({ token });
+      return data.success === true;
+    }
+    // Fallback to direct fetch (e.g. in browser dev)
     const res = await fetch(`${BACKEND_URL}/api/auth/verify`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -293,16 +299,26 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      let data: LoginResponse;
+
+      // Route through Electron main process via IPC (renderer fetch may be blocked)
+      if (window.electronAPI?.authLogin) {
+        data = await window.electronAPI.authLogin({
           username: username.trim(),
           password,
-        }),
-      });
-
-      const data: LoginResponse = await response.json();
+        });
+      } else {
+        // Fallback to direct fetch (e.g. in browser dev)
+        const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username.trim(),
+            password,
+          }),
+        });
+        data = await response.json();
+      }
 
       if (data.success && data.data) {
         // Store token

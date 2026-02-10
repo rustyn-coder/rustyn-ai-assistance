@@ -59,13 +59,11 @@ const App: React.FC = () => {
       try {
         const token = getStoredToken();
         if (token) {
-          // Verify the token is still valid with the backend
           const isValid = await verifyStoredToken();
           if (isValid) {
             setIsAuthenticated(true);
             setAuthUser(getStoredUser());
           } else {
-            // Token expired or invalid — clear it
             clearStoredAuth();
             setIsAuthenticated(false);
           }
